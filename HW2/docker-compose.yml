@@ -1,0 +1,49 @@
+services:
+  alpine-main:
+    image: ansible-alpine
+    container_name: alpine-main
+    working_dir: /ansible
+    volumes:
+      - ./ansible:/ansible
+      - ./app:/app
+      - ./Nginx:/Nginx
+    networks:
+      - my_net
+    command: /bin/sh -c "rc-update add sshd && \
+                        rc-status && \
+                        touch /run/openrc/softlevel && \
+                        rc-service sshd start && \
+                        rc-service sshd restart && \
+                        sleep infinity"
+
+  alpine-1:
+    image: ansible-alpine
+    container_name: alpine-1
+    networks:
+      - my_net
+    command: /bin/sh -c "echo 'root:123' | chpasswd && \ 
+                        rc-update add sshd && \
+                        rc-status && \
+                        touch /run/openrc/softlevel && \
+                        echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config && \
+                        echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+                        rc-service sshd start && \
+                        sleep infinity"
+
+  alpine-2:
+    image: ansible-alpine
+    container_name: alpine-2
+    networks:
+      - my_net
+    command: /bin/sh -c "echo 'root:123' | chpasswd && \ 
+                        rc-update add sshd && \
+                        rc-status && \
+                        touch /run/openrc/softlevel && \
+                        echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config && \
+                        echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+                        rc-service sshd start && \
+                        sleep infinity"
+
+networks:
+  my_net:
+    driver: bridge
