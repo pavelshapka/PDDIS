@@ -1,0 +1,13 @@
+
+--------- start script ---------
+response status: 200
+requested date 2003-08-17
+connection arguments: {'host': 'postgres', 'database': 'db0', 'user': 'boss', 'password': '1234'}
+currency with ID: R01035, Value: 48.6167, Name: Фунт стерлингов Соединенного королевства, Date: 2003-08-17 00:00:00
+currency with ID: R01235, Value: 30.3532, Name: Доллар США, Date: 2003-08-17 00:00:00
+currency with ID: R01239, Value: 34.1534, Name: Евро, Date: 2003-08-17 00:00:00
+Insert query: INSERT INTO t_currency (name, char_code, value, date) VALUES
+('Фунт стерлингов Соединенного королевства', 'GBP', 48.6167, '2003-08-17 00:00:00'),
+('Доллар США', 'USD', 30.3532, '2003-08-17 00:00:00'),
+('Евро', 'EUR', 34.1534, '2003-08-17 00:00:00');
+---------- end script ----------
