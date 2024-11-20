@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pavelshapka/JenkinsProject.git'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh "pytest tests --cov=app --cov-report xml:coverage.xml --alluredir=allure-results || true"
+            }
+        }
+
+        stage('Scan') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    tool name: 'Maven', type: 'maven'
+                    sh 'mvn clean sonar:sonar'
+                }
+            }
+        }
+
+        stage('Reports') {
+            steps {
+                allure([
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'report']]
+                ])
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh "cd /var/lib/ansible && ansible-playbook -i hosts.txt playbook-deploy.yml --extra-vars repo_path=${env.WORKSPACE}"     
+            }
+        }
+
+    }
+    post {
+        always {
+            echo 'Pipeline finish!'
+        }
+    }
+}
