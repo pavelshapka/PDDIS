@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: boss
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: db0
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_net
+
+  ubuntu:
+    image: ubuntu
+    container_name: ubuntu
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    environment:
+      POSTGRES_USER: boss
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: db0
+    command: /bin/sh -c "echo 'root:123' | chpasswd && \
+                        sleep infinity"
+    depends_on:
+      - postgres
+    networks:
+      - my_net
+
+
+networks:
+  my_net:
+    driver: bridge
