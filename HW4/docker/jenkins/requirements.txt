@@ -1,0 +1,4 @@
+typing
+pytest
+allure-pytest
+pytest-cov

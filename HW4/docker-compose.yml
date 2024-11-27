@@ -1,0 +1,61 @@
+services:
+  alpine:
+    image: alpine
+    container_name: alpine
+    networks:
+      - my_net
+    command: /bin/sh -c "echo 'root:123' | chpasswd && \ 
+                        rc-update add sshd && \
+                        rc-status && \
+                        touch /run/openrc/softlevel && \
+                        echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config && \
+                        echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+                        rc-service sshd start && \
+                        sleep infinity"
+
+  jenkins:
+    image: jenkins_img
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - ./ansible:/var/lib/ansible
+    user: root
+    networks:
+      - my_net
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    depends_on:
+      - db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - ./sonarqube/sonarqube_data:/opt/sonarqube/data
+      - ./sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
+      - ./sonarqube/sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - my_net
+
+  db:
+    image: postgres:12
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - ./sonarqube/postgresql:/var/lib/postgresql
+      - ./sonarqube/postgresql_data:/var/lib/postgresql/data
+    networks:
+      - my_net
+
+networks:
+  my_net:
+    driver: bridge

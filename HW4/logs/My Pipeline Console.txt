@@ -1,0 +1,218 @@
+Started by user admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/my-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone Repository)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/my-pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/pavelshapka/JenkinsProject.git # timeout=10
+Fetching upstream changes from https://github.com/pavelshapka/JenkinsProject.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/pavelshapka/JenkinsProject.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 807b3ebce9d619353d16ce0256cd776b55a202d2 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 807b3ebce9d619353d16ce0256cd776b55a202d2 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 807b3ebce9d619353d16ce0256cd776b55a202d2 # timeout=10
+Commit message: "Delete app/__pycache__ directory"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] sh
++ pytest tests --cov=app --cov-report xml:coverage.xml --alluredir=allure-results
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-8.3.3, pluggy-1.5.0
+rootdir: /var/jenkins_home/workspace/my-pipeline
+plugins: cov-6.0.0, allure-pytest-2.13.5, anyio-3.6.2
+collected 5 items
+
+tests/test_calculator.py ...                                             [ 60%]
+tests/test_string_builder.py ..                                          [100%]
+
+---------- coverage: platform linux, python 3.11.2-final-0 -----------
+Coverage XML written to file coverage.xml
+
+
+============================== 5 passed in 0.02s ===============================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Scan)
+[Pipeline] withSonarQubeEnv
+Injecting SonarQube environment variables using the configuration: SonarQube
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] sh
++ mvn clean sonar:sonar
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36mcom.example:Calculator-StringBuilder[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Calculator-StringBuilder 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mCalculator-StringBuilder[0;1m ---[m
+[[1;34mINFO[m] Deleting /var/jenkins_home/workspace/my-pipeline/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36mcom.example:Calculator-StringBuilder[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Calculator-StringBuilder 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32msonar-maven-plugin:4.0.0.4121:sonar[m [1m(default-cli)[m @ [36mCalculator-StringBuilder[0;1m ---[m
+[[1;34mINFO[m] 22:49:46.393 Java 17.0.13 Eclipse Adoptium (64-bit)
+[[1;34mINFO[m] 22:49:46.393 Linux 6.11.5-orbstack-00280-g96d99c92a42b (aarch64)
+[[1;34mINFO[m] 22:49:46.475 User cache: /root/.sonar/cache
+[[1;34mINFO[m] 22:49:46.510 Communicating with SonarQube Server 10.7.0.96327
+[[1;34mINFO[m] 22:49:46.515 Default locale: "en", source code encoding: "UTF-8" (analysis is platform dependent)
+[[1;34mINFO[m] 22:49:46.839 Load global settings
+[[1;34mINFO[m] 22:49:46.892 Load global settings (done) | time=52ms
+[[1;34mINFO[m] 22:49:46.897 Server id: 243B8A4D-AZM6f354Ti0Ixqebpyg9
+[[1;34mINFO[m] 22:49:46.901 Loading required plugins
+[[1;34mINFO[m] 22:49:46.901 Load plugins index
+[[1;34mINFO[m] 22:49:46.908 Load plugins index (done) | time=7ms
+[[1;34mINFO[m] 22:49:46.908 Load/download plugins
+[[1;34mINFO[m] 22:49:46.915 Load/download plugins (done) | time=7ms
+[[1;34mINFO[m] 22:49:47.021 Process project properties
+[[1;34mINFO[m] 22:49:47.025 Process project properties (done) | time=4ms
+[[1;34mINFO[m] 22:49:47.030 Project key: PyApp
+[[1;34mINFO[m] 22:49:47.030 Base dir: /var/jenkins_home/workspace/my-pipeline
+[[1;34mINFO[m] 22:49:47.030 Working dir: /var/jenkins_home/workspace/my-pipeline/target/sonar
+[[1;34mINFO[m] 22:49:47.034 Load project settings for component key: 'PyApp'
+[[1;34mINFO[m] 22:49:47.045 Load project settings for component key: 'PyApp' (done) | time=11ms
+[[1;34mINFO[m] 22:49:47.057 Load quality profiles
+[[1;34mINFO[m] 22:49:47.090 Load quality profiles (done) | time=33ms
+[[1;34mINFO[m] 22:49:47.098 Auto-configuring with CI 'Jenkins'
+[[1;34mINFO[m] 22:49:47.117 Load active rules
+[[1;34mINFO[m] 22:49:48.001 Load active rules (done) | time=884ms
+[[1;34mINFO[m] 22:49:48.004 Load analysis cache
+[[1;34mINFO[m] 22:49:48.030 Load analysis cache (2.4 kB) | time=26ms
+[[1;34mINFO[m] 22:49:48.063 Preprocessing files...
+[[1;34mINFO[m] 22:49:48.116 1 language detected in 11 preprocessed files
+[[1;34mINFO[m] 22:49:48.116 0 files ignored because of scm ignore settings
+[[1;34mINFO[m] 22:49:48.117 Loading plugins for detected languages
+[[1;34mINFO[m] 22:49:48.118 Load/download plugins
+[[1;34mINFO[m] 22:49:48.120 Load/download plugins (done) | time=2ms
+[[1;34mINFO[m] 22:49:48.146 Load project repositories
+[[1;34mINFO[m] 22:49:48.155 Load project repositories (done) | time=9ms
+[[1;34mINFO[m] 22:49:48.160 Indexing files...
+[[1;34mINFO[m] 22:49:48.160 Project configuration:
+[[1;34mINFO[m] 22:49:48.166 11 files indexed
+[[1;34mINFO[m] 22:49:48.168 Quality profile for py: Sonar way
+[[1;34mINFO[m] 22:49:48.168 ------------- Run sensors on module Python Calculator and StringBuilder
+[[1;34mINFO[m] 22:49:48.187 Load metrics repository
+[[1;34mINFO[m] 22:49:48.196 Load metrics repository (done) | time=8ms
+[[1;34mINFO[m] 22:49:48.431 Sensor JaCoCo XML Report Importer [jacoco]
+[[1;34mINFO[m] 22:49:48.432 'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+[[1;34mINFO[m] 22:49:48.432 No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+[[1;34mINFO[m] 22:49:48.432 Sensor JaCoCo XML Report Importer [jacoco] (done) | time=1ms
+[[1;34mINFO[m] 22:49:48.432 Sensor Java Config Sensor [iac]
+[[1;34mINFO[m] 22:49:48.440 0 source files to be analyzed
+[[1;34mINFO[m] 22:49:48.442 0/0 source files have been analyzed
+[[1;34mINFO[m] 22:49:48.442 Sensor Java Config Sensor [iac] (done) | time=10ms
+[[1;34mINFO[m] 22:49:48.443 Sensor Python Sensor [python]
+[[1;33mWARNING[m] 22:49:48.445 No explicit support for version 3.11.2. Python version has been set to 3.11.
+[[1;34mINFO[m] 22:49:48.533 Starting global symbols computation
+[[1;34mINFO[m] 22:49:48.534 5 source files to be analyzed
+[[1;34mINFO[m] 22:49:48.611 5/5 source files have been analyzed
+[[1;34mINFO[m] 22:49:48.624 Starting rules execution
+[[1;34mINFO[m] 22:49:48.624 5 source files to be analyzed
+[[1;34mINFO[m] 22:49:48.900 5/5 source files have been analyzed
+[[1;34mINFO[m] 22:49:48.901 The Python analyzer was able to leverage cached data from previous analyses for 0 out of 5 files. These files were not parsed.
+[[1;34mINFO[m] 22:49:48.901 Sensor Python Sensor [python] (done) | time=458ms
+[[1;34mINFO[m] 22:49:48.901 Sensor Cobertura Sensor for Python coverage [python]
+[[1;34mINFO[m] 22:49:48.906 Python test coverage
+[[1;34mINFO[m] 22:49:48.908 Parsing report '/var/jenkins_home/workspace/my-pipeline/coverage.xml'
+[[1;34mINFO[m] 22:49:48.931 Sensor Cobertura Sensor for Python coverage [python] (done) | time=30ms
+[[1;34mINFO[m] 22:49:48.931 Sensor PythonXUnitSensor [python]
+[[1;34mINFO[m] 22:49:48.933 Sensor PythonXUnitSensor [python] (done) | time=2ms
+[[1;34mINFO[m] 22:49:48.933 Sensor IaC Docker Sensor [iac]
+[[1;34mINFO[m] 22:49:48.965 0 source files to be analyzed
+[[1;34mINFO[m] 22:49:48.965 0/0 source files have been analyzed
+[[1;34mINFO[m] 22:49:48.965 Sensor IaC Docker Sensor [iac] (done) | time=32ms
+[[1;34mINFO[m] 22:49:48.965 Sensor TextAndSecretsSensor [text]
+[[1;34mINFO[m] 22:49:48.965 Available processors: 12
+[[1;34mINFO[m] 22:49:48.965 Using 12 threads for analysis.
+[[1;34mINFO[m] 22:49:49.150 Using git CLI to retrieve untracked files
+[[1;34mINFO[m] 22:49:49.153 Analyzing language associated files and files included via "sonar.text.inclusions" that are tracked by git
+[[1;34mINFO[m] 22:49:49.159 6 source files to be analyzed
+[[1;34mINFO[m] 22:49:49.170 6/6 source files have been analyzed
+[[1;34mINFO[m] 22:49:49.171 Sensor TextAndSecretsSensor [text] (done) | time=206ms
+[[1;34mINFO[m] 22:49:49.173 ------------- Run sensors on project
+[[1;34mINFO[m] 22:49:49.240 Sensor Zero Coverage Sensor
+[[1;34mINFO[m] 22:49:49.240 Sensor Zero Coverage Sensor (done) | time=0ms
+[[1;34mINFO[m] 22:49:49.243 CPD Executor 1 file had no CPD blocks
+[[1;34mINFO[m] 22:49:49.243 CPD Executor Calculating CPD for 1 file
+[[1;34mINFO[m] 22:49:49.246 CPD Executor CPD calculation finished (done) | time=3ms
+[[1;34mINFO[m] 22:49:49.250 SCM revision ID '807b3ebce9d619353d16ce0256cd776b55a202d2'
+[[1;34mINFO[m] 22:49:49.281 Analysis report generated in 31ms, dir size=228.7 kB
+[[1;34mINFO[m] 22:49:49.295 Analysis report compressed in 13ms, zip size=29.7 kB
+[[1;34mINFO[m] 22:49:49.331 Analysis report uploaded in 35ms
+[[1;34mINFO[m] 22:49:49.332 ANALYSIS SUCCESSFUL, you can find the results at: http://sonarqube:9000/dashboard?id=PyApp
+[[1;34mINFO[m] 22:49:49.332 Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+[[1;34mINFO[m] 22:49:49.332 More about the report processing at http://sonarqube:9000/api/ce/task?id=1c337d8f-eca1-4a03-a5d8-c70b02c0dfe4
+[[1;34mINFO[m] 22:49:49.335 Analysis total time: 2.404 s
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  3.074 s
+[[1;34mINFO[m] Finished at: 2024-11-17T22:49:49Z
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[0m[0m
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Reports)
+[Pipeline] allure
+[my-pipeline] $ /var/jenkins_home/tools/ru.yandex.qatools.allure.jenkins.tools.AllureCommandlineInstallation/Allure/bin/allure generate -c -o /var/jenkins_home/workspace/my-pipeline/allure-report
+Report successfully generated to /var/jenkins_home/workspace/my-pipeline/allure-report
+Allure report was successfully generated.
+Creating artifact for the build.
+Artifact was added to the build.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ cd /var/lib/ansible
++ ansible-playbook -i hosts.txt playbook-deploy.yml --extra-vars repo_path=/var/jenkins_home/workspace/my-pipeline
+
+PLAY [Deploy app] **************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [alpine]
+
+TASK [Create directory] ********************************************************
+changed: [alpine]
+
+TASK [Copy app] ****************************************************************
+changed: [alpine]
+
+TASK [Run app] *****************************************************************
+changed: [alpine]
+
+PLAY RECAP *********************************************************************
+alpine                     : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Pipeline finish!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
