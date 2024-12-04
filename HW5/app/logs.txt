@@ -1,0 +1,26 @@
+
+--------- start script ---------
+response status: 200
+requested date 2002-03-02
+connection arguments: {'host': 'postgres-service', 'port': '5432', 'dbname': 'db0', 'user': 'boss', 'password': '123'}
+currency with ID: R01035, Value: 43.8254, Name: Фунт стерлингов Соединенного королевства, Date: 2002-03-02 00:00:00
+currency with ID: R01235, Value: 30.9436, Name: Доллар США, Date: 2002-03-02 00:00:00
+currency with ID: R01239, Value: 26.8343, Name: Евро, Date: 2002-03-02 00:00:00
+Insert query: INSERT INTO t_currency (name, char_code, value, date) VALUES
+('Фунт стерлингов Соединенного королевства', 'GBP', 43.8254, '2002-03-02 00:00:00'),
+('Доллар США', 'USD', 30.9436, '2002-03-02 00:00:00'),
+('Евро', 'EUR', 26.8343, '2002-03-02 00:00:00');
+---------- end script ----------
+
+--------- start script ---------
+response status: 200
+requested date 2002-03-02
+connection arguments: {'host': 'postgres-service', 'port': '5432', 'dbname': 'db0', 'user': 'boss', 'password': '123'}
+currency with ID: R01035, Value: 43.8254, Name: Фунт стерлингов Соединенного королевства, Date: 2002-03-02 00:00:00
+currency with ID: R01235, Value: 30.9436, Name: Доллар США, Date: 2002-03-02 00:00:00
+currency with ID: R01239, Value: 26.8343, Name: Евро, Date: 2002-03-02 00:00:00
+Insert query: INSERT INTO t_currency (name, char_code, value, date) VALUES
+('Фунт стерлингов Соединенного королевства', 'GBP', 43.8254, '2002-03-02 00:00:00'),
+('Доллар США', 'USD', 30.9436, '2002-03-02 00:00:00'),
+('Евро', 'EUR', 26.8343, '2002-03-02 00:00:00');
+---------- end script ----------
