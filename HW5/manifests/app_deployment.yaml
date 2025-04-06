@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-deployment
+  labels:
+    app: python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+    spec:
+      nodeSelector:
+        role: app
+      containers:
+        - name: my-python-app
+          image: py-app
+          imagePullPolicy: Never
+          volumeMounts:
+            - mountPath: /app
+              name: app-data
+          workingDir: /app
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo 'root:123' | chpasswd && \
+              sleep infinity
+          env:
+            - name: POSTGRES_HOST
+              value: postgres-service
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: db0
+            - name: POSTGRES_USER
+              value: boss
+            - name: POSTGRES_PASSWORD
+              value: "123"
+      volumes:
+        - name: app-data
+          hostPath:
+            path: /app
+            type: DirectoryOrCreate
